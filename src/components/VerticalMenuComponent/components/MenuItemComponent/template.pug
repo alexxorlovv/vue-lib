@@ -1,0 +1,26 @@
+ListItemElement.menu__item(v-tooltip="{enabled:!isShow && !isOpen && isFirst, placement: placement == 'left' ? 'right' : 'left'}", :content="element.text" @mouseout.native="(!isOpen && isHover) ? mouseEnd($event): null", @mouseover.native="(!isOpen && isHover) ? mouseStart($event): null")
+  router-link(:to="element.sub.length > 0 ? '#!' : element.link ", :class="[isShow ? 'menu__item-content_active' : '', isFirst ? 'menu__item-content_first' : '']").menu__item-link-content
+    .menu__item-content.row.no-gutters.align-items-center(@click="element.sub.length > 0 ? toogle() : ''", :class="[isActiveMenu ? 'menu__item_active' : null]")
+      .menu__item-icon.col.align-self-center
+        IconElement(:src="element.icon")
+      .menu__item-name.col.align-self-center {{element.text}}
+      .menu__item-badge.col.align-self-center
+        BadgeElement(theme="danger" v-if="element.counter > 0") {{element.counter > 99 ? '99+' : element.counter}}
+      .menu__item-arrow.col.align-self-center(v-if="element.sub.length > 0")
+        IconElement(src="arrow-right")
+  CollapseTransitionElement(v-if="element.sub.length > 0" :enabled="isOpen")
+    MenuItemListComponent(:elements="element.sub",
+                          :theme="theme"
+                          :isOpen="isOpen",
+                          @closeChildrenEvent="closeChildrenHandler",
+                          :isCloseChildrenProp="isCloseChildren",
+                          @diactiveMenuEvent="diactiveMenuHandler",
+                          :isDiactiveMenu="isDiactiveMenu",
+                          @activeMenuEvent="activeMenuHandler",
+                          :isHover="true",
+                          :text="element.text",
+                          :isFirstChild="isFirst",
+                          :isFirst="false",
+                          :placement="placement",
+                          :isClose="isClose",
+                          v-if="isShow")
